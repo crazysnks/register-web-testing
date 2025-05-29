@@ -1,15 +1,23 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+
+import TemplateA from '../../components/TemplateA';
+import TemplateB from '../../components/TemplateB';
+import TemplateC from '../../components/TemplateC';
+import { TemplateProps } from '../../components/templates/TemplateProps';
 
 export default function RegisterPage() {
   const params = useParams();
-  const eventId = params.eventId as string;  // ✅ Get route param directly
+  const eventId = params.eventId as string;
+
+  const [template, setTemplate] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [attending, setAttending] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleSubmit = async () => {
     if (!eventId || !name) {
@@ -26,39 +34,52 @@ export default function RegisterPage() {
     setSubmitted(true);
   };
 
-  if (submitted) return <div className="text-center mt-20">✅ Thanks for registering!</div>;
+  useEffect(() => {
+    async function fetchTemplate() {
+      const { data, error } = await supabase
+        .from('events')
+        .select('template')
+        .eq('event_id', eventId)
+        .single();
 
-  return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow">
-      <h1 className="text-xl font-bold mb-4">Register</h1>
-      <input
-        type="text"
-        placeholder="Your Name"
-        className="w-full p-2 border rounded mb-4"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <div className="mb-4">
-        <label className="mr-4">
-          <input
-            type="radio"
-            checked={attending}
-            onChange={() => setAttending(true)}
-          />{' '}
-          Attending
-        </label>
-        <label>
-          <input
-            type="radio"
-            checked={!attending}
-            onChange={() => setAttending(false)}
-          />{' '}
-          Not Attending
-        </label>
-      </div>
-      <button onClick={handleSubmit} className="bg-blue-500 text-white py-2 px-4 rounded">
-        Submit
-      </button>
-    </div>
-  );
+      if (error) {
+        console.error('Error fetching template:', error.message);
+        setTemplate('template-a'); // default fallback
+      } else {
+        setTemplate(data?.template || 'template-a'); // use default if null
+      }
+
+      setLoading(false);
+    }
+
+    if (eventId) {
+      fetchTemplate();
+    }
+  }, [eventId]);
+
+  if (loading) {
+    return <div className="text-center mt-20">Loading template...</div>;
+  }
+
+  if (submitted) {
+    return <div className="text-center mt-20 text-xl">✅ Thanks for registering!</div>;
+  }
+
+  const templateProps: TemplateProps = {
+    name,
+    setName,
+    attending,
+    setAttending,
+    handleSubmit,
+  };
+
+  switch (template) {
+    case 'template-b':
+      return <TemplateB {...templateProps} />;
+    case 'template-c':
+      return <TemplateC {...templateProps} />;
+    case 'template-a':
+    default:
+      return <TemplateA {...templateProps} />;
+  }
 }
