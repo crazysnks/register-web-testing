@@ -1,17 +1,21 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function RegisterPage() {
-  const eventId = useSearchParams().get('eventId');
+  const params = useParams();
+  const eventId = params.eventId as string;  // ✅ Get route param directly
   const [name, setName] = useState('');
   const [attending, setAttending] = useState(true);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async () => {
-    if (!eventId || !name) return alert('Missing info');
+    if (!eventId || !name) {
+      alert('Missing info');
+      return;
+    }
 
     await supabase.from('registrations').insert({
       event_id: eventId,
