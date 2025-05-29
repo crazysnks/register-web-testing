@@ -1,3 +1,5 @@
+import { TemplateProps } from './templates/TemplateProps';
+
 export default function TemplateC({ name, setName, attending, setAttending, handleSubmit }: any) {
     return (
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 min-h-screen flex items-center justify-center">

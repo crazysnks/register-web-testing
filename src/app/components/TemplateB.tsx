@@ -1,3 +1,5 @@
+import { TemplateProps } from './templates/TemplateProps';
+
 export default function TemplateB({ name, setName, attending, setAttending, handleSubmit }: any) {
     return (
       <div className="bg-yellow-100 min-h-screen flex items-center justify-center">
