@@ -1,6 +1,12 @@
 import { TemplateProps } from './templates/TemplateProps';
 
-export default function TemplateB({ name, setName, attending, setAttending, handleSubmit }: any) {
+export default function TemplateB({
+    name,
+    setName,
+    attending,
+    setAttending,
+    handleSubmit,
+  }: TemplateProps) {
     return (
       <div className="bg-yellow-100 min-h-screen flex items-center justify-center">
         <div className="max-w-lg w-full p-8 bg-white shadow-xl rounded-xl text-center">
@@ -33,4 +39,3 @@ export default function TemplateB({ name, setName, attending, setAttending, hand
       </div>
     );
   }
-  

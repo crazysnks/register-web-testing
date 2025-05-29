@@ -1,4 +1,12 @@
-export default function TemplateA({ name, setName, attending, setAttending, handleSubmit }: any) {
+import { TemplateProps } from './templates/TemplateProps';
+
+export default function TemplateA({
+    name,
+    setName,
+    attending,
+    setAttending,
+    handleSubmit,
+  }: TemplateProps) {
     return (
       <div className="bg-white min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 border rounded shadow">
@@ -25,4 +33,3 @@ export default function TemplateA({ name, setName, attending, setAttending, hand
       </div>
     );
   }
-  

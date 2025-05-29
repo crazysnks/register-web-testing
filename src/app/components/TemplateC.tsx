@@ -1,6 +1,12 @@
 import { TemplateProps } from './templates/TemplateProps';
 
-export default function TemplateC({ name, setName, attending, setAttending, handleSubmit }: any) {
+export default function TemplateC({
+    name,
+    setName,
+    attending,
+    setAttending,
+    handleSubmit,
+  }: TemplateProps) {
     return (
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 min-h-screen flex items-center justify-center">
         <div className="bg-white p-8 rounded-xl shadow-lg text-center w-full max-w-md">
@@ -33,4 +39,3 @@ export default function TemplateC({ name, setName, attending, setAttending, hand
       </div>
     );
   }
-  
